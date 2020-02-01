@@ -69,7 +69,7 @@ class App:
 
         Label(self.master, text='User ID').grid(row=0, column=0)
         un = StringVar()
-        self.uname_entry = Entry(self.master, textvariable=un)
+        self.uname_entry = Entry(self.master, textvariable=un, width=30)
         self.uname_entry.grid(row=0, column=1)
         
         Label(self.master, text='Password').grid(row=0, column=2)
@@ -84,7 +84,7 @@ class App:
         problems_lbl = Label(self.master, text="Problem Sets")
         problems_lbl.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky=(W))
 
-        Label(self.master, text='Memo Filter').grid(row=2, column=3)
+        Label(self.master, text='Memo Filter').grid(row=2, column=2)
         filter_str = StringVar()
         filter_str.set("")
         filter_str.trace("w", filter_str.get())
@@ -92,18 +92,18 @@ class App:
         sv = StringVar()
         sv.trace("w", lambda name, index, mode, sv=sv: self.show_students())
         self.filter_entry = Entry(self.master, textvariable=sv)
-        self.filter_entry.grid(row=2, column=4) 
-
+        self.filter_entry.grid(row=2, column=3, padx=5, pady=5) 
+        
         self.problem_set_menu = Listbox(self.master, height=30, exportselection=False)
         self.problem_set_menu.bind('<<ListboxSelect>>', lambda e: self.show_students())
-        self.problem_set_menu.grid(row=3, column=0)
+        self.problem_set_menu.grid(row=3, column=0, padx=5, pady=5)
 
         cols = ('Username', 'Memo', 'Score')
-        self.student_list = Treeview(self.master, columns=cols,  height=30, show='headings')
-        
+        self.student_list = Treeview(self.master, columns=cols, height=30, show='headings')
+
         for col in cols:
             self.student_list.heading(col, text=col)  
-        self.student_list.grid(row=3, column=2, columnspan=2)
+        self.student_list.grid(row=3, column=1, columnspan=4, padx=5, pady=5)
 
         
         links = Frame(self.master)
@@ -213,14 +213,13 @@ class App:
         """
         Does something.
         """
-        
+
         if self.logged_in:
             self.student_list.delete(*self.student_list.get_children())
             selected_problem_sets = self.problem_set_menu.curselection()
 
             if not selected_problem_sets is ():
                 index = selected_problem_sets[0]
-                print(index)
             else:
                 index = None
                 
@@ -242,6 +241,7 @@ class App:
                     
                     self.student_list.insert("", "end", values=(user, memo, score))
 
+        
 # Let's do this!
 if __name__ == "__main__":
     root = Tk()
