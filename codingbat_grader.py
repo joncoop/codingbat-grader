@@ -13,6 +13,7 @@ import webbrowser
 from bs4 import BeautifulSoup
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from tkinter import *
+from tkinter.ttk import *
 
 if getattr(sys, 'frozen', False):
     application_path = sys._MEIPASS + '/'
@@ -93,32 +94,39 @@ class App:
         self.filter_entry = Entry(self.master, textvariable=sv)
         self.filter_entry.grid(row=2, column=4) 
 
-        self.problem_set_menu = Listbox(self.master, exportselection=False)
+        self.problem_set_menu = Listbox(self.master, height=30, exportselection=False)
         self.problem_set_menu.bind('<<ListboxSelect>>', lambda e: self.show_students())
         self.problem_set_menu.grid(row=3, column=0)
 
-        self.student_list = Text(self.master, height=30, width=40)
+        cols = ('Username', 'Memo', 'Score')
+        self.student_list = Treeview(self.master, columns=cols,  height=30, show='headings')
+        
+        for col in cols:
+            self.student_list.heading(col, text=col)  
         self.student_list.grid(row=3, column=2, columnspan=2)
+
         
         links = Frame(self.master)
-
-        help_link = Label(links, text="Help", fg="blue", cursor="hand2")
+        
+        help_link = Label(links, text="Help", foreground="blue", cursor="hand2")
         help_link.pack( side = LEFT )
         help_link.bind("<Button-1>", lambda e: webbrowser.open_new(help_url))
 
+        '''
         if not self.is_up_to_date():
-            slash = Label(links, text=" | ", fg="gray", cursor="hand2")
+            slash = Label(links, text=" | ", foreground="gray", cursor="hand2")
             slash.pack( side = LEFT )
                     
-            update_link = Label(links, text="Update CodingBat Grader", fg="blue", cursor="hand2")
+            update_link = Label(links, text="Update CodingBat Grader", foreground="blue", cursor="hand2")
             update_link.pack( side = LEFT )
             update_link.bind("<Button-1>", lambda e: webbrowser.open_new(help_url))
+        '''
+        
+        links.grid(row=4, column=0, columnspan=3, padx=5, pady=5, sticky=(W))
 
-        links.grid(row=9, column=0, columnspan=3, padx=5, pady=5, sticky=(W))
-
-        version = Label(self.master, text=software_version, fg="gray")
-        version.grid(row=9, column=4, columnspan=1, padx=5, pady=5, sticky=(E))
-
+        version = Label(self.master, text=software_version, foreground="gray")
+        version.grid(row=4, column=4, columnspan=1, padx=5, pady=5, sticky=(E))
+        
 
     def is_up_to_date(self):
         """
@@ -161,37 +169,38 @@ class App:
                        "pw": self.pw_entry.get()}
             
             response = s.post(LOGIN_URL, verify=SSL_VERIFY, data=payload)
-            
             html = s.get(REPORT_URL).content
 
-        self.logged_in = True
-        
-        soup = BeautifulSoup(html, "html.parser")
-        self.data_table = soup.findAll('table')[2] # the third table is the student scores
+        self.logged_in = '[<a href=/logout>log out</a>]' in str(html)
 
-        rows = self.data_table.findAll('tr')
-        header_row = rows[0]
-        th_elements = header_row.findAll('th')
+        if self.logged_in:
+            soup = BeautifulSoup(html, "html.parser")
+            self.data_table = soup.findAll('table')[2] # the third table is the student scores
 
-        self.headers = []
-        for th in th_elements:
-            self.headers.append(th.get_text().strip())
+            rows = self.data_table.findAll('tr')
+            header_row = rows[0]
+            th_elements = header_row.findAll('th')
 
-        self.problem_sets = self.headers[2:]
-        self.show_problem_sets()
+            self.headers = []
+            for th in th_elements:
+                self.headers.append(th.get_text().strip())
 
-        
-        self.students = []
+            self.problem_sets = self.headers[2:]
+            self.show_problem_sets()
+            
+            self.students = []
 
-        for row in rows[2:]:
-            td_elements = row.findAll('td')
+            for row in rows[2:]:
+                td_elements = row.findAll('td')
 
-            student = []
-            for i, td in enumerate(td_elements):
-                student.append(td.get_text())
-            self.students.append(student)
+                student = []
+                for i, td in enumerate(td_elements):
+                    student.append(td.get_text())
+                self.students.append(student)
 
-        self.show_students()
+            self.show_students()
+        else:
+            print("login failed")
     
     def show_problem_sets(self):
         """
@@ -200,13 +209,13 @@ class App:
         for i, ps in enumerate(self.problem_sets):
             self.problem_set_menu.insert(i, ps) 
         
-
     def show_students(self):
         """
         Does something.
         """
+        
         if self.logged_in:
-            self.student_list.delete("1.0",END)
+            self.student_list.delete(*self.student_list.get_children())
             selected_problem_sets = self.problem_set_menu.curselection()
 
             if not selected_problem_sets is ():
@@ -218,7 +227,9 @@ class App:
             memo_filter = self.filter_entry.get()
             memo_filter.lower()
 
+            i = 0
             for stu in self.students:
+                user = stu[0]
                 memo = stu[1]
 
                 if index is not None:
@@ -227,10 +238,9 @@ class App:
                     score = ''
 
                 if memo_filter in memo.lower():
-                    self.student_list.insert(END, f'{memo:30s} {score}\n')
-    
-
-
+                    #self.student_list.insert(END, f'{memo:30s} {score}\n')
+                    
+                    self.student_list.insert("", "end", values=(user, memo, score))
 
 # Let's do this!
 if __name__ == "__main__":
