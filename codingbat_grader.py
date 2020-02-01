@@ -81,8 +81,10 @@ class App:
         login_button.bind('<Return>', lambda e: self.login())
         login_button.grid(row=0, column=4, padx=5, pady=5, sticky=(E))
 
+        sep = Separator(self.master, orient=HORIZONTAL).grid(row=1, columnspan=5, sticky='EW')
+
         problems_lbl = Label(self.master, text="Problem Sets")
-        problems_lbl.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky=(W))
+        problems_lbl.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky=(W))
 
         Label(self.master, text='Memo Filter').grid(row=2, column=2)
         filter_str = StringVar()
@@ -94,12 +96,12 @@ class App:
         self.filter_entry = Entry(self.master, textvariable=sv)
         self.filter_entry.grid(row=2, column=3, padx=5, pady=5) 
         
-        self.problem_set_menu = Listbox(self.master, height=30, exportselection=False)
+        self.problem_set_menu = Listbox(self.master, height=36, exportselection=False)
         self.problem_set_menu.bind('<<ListboxSelect>>', lambda e: self.show_students())
-        self.problem_set_menu.grid(row=3, column=0, padx=5, pady=5)
+        self.problem_set_menu.grid(row=3, column=0, padx=5, pady=5, sticky=(N))
 
         cols = ('Username', 'Memo', 'Score')
-        self.student_list = Treeview(self.master, columns=cols, height=30, show='headings')
+        self.student_list = Treeview(self.master, columns=cols, height=32, show='headings')
 
         for col in cols:
             self.student_list.heading(col, text=col)  
