@@ -1,37 +1,40 @@
-## Welcome to GitHub Pages
+## About
 
-You can use the [editor on GitHub](https://github.com/joncoop/codingbat-grader/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+CodingBat Grader is a tool that parse [CodingBat Teacher Reports](https://codingbat.com/report) and present student grades in a searchable, easy to view format.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+<!--
+## Downloads
 
-### Markdown
+Get v0.9-beta.1
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+![Windows](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/win.png)
+[Self-installing version (recommended)](https://github.com/joncoop/zipgrade-reporter/releases/download/v0.9-beta.1/CodingBat.Grader.Setup.exe)
+ /
+[Stand-alone version (.exe)](https://github.com/joncoop/zipgrade-reporter/releases/download/v0.9-beta.1/CodingBat.Grader.exe)
 
-```markdown
-Syntax highlighted code block
+![Mac](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/mac.png) Coming soon
 
-# Header 1
-## Header 2
-### Header 3
+![Linux](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/lin.png) Coming Soon
+-->
 
-- Bulleted
-- List
+## How to use
 
-1. Numbered
-2. List
+1. Log in using your CodingBat login credentials.
+2. Select the problem set to view grades for.
+3. Optionally, enter text into the filter field to filter by Memo.
 
-**Bold** and _Italic_ and `Code` text
+## Tips
 
-[Link](url) and ![Image](src)
-```
+In order to easily filter students by class, have them enter a unique string in their Memo field that corresponds to their class/section. For example, a student in AP Computer Science A, section 3 could include [APCSA-3] in the memo field along with their name. For example, all of my students have memo fields in the following format:
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+    Lovelace, Ada [APCSA-3]
 
-### Jekyll Themes
+## Disclaimer
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/joncoop/codingbat-grader/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+This program is free software. It is provided "as is", without warranty of any kind.
 
-### Support or Contact
+CodingBat Grader is not affiliated, associated, authorized, endorsed by, or in any way officially connected with CodingBat, Nick Parlante, or Stanford University. The official CodingBat website can be found at [CodingBat](https://www.codingbat.com/).
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## Contact
+
+Something not working right? Do you have a feature request? You can [view or report issues here](https://github.com/joncoop/codingbat-grader/issues).
