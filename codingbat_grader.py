@@ -84,7 +84,7 @@ class App:
         sep = Separator(self.master, orient=HORIZONTAL).grid(row=1, columnspan=5, sticky='EW')
 
         problems_lbl = Label(self.master, text="Problem Sets")
-        problems_lbl.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky=(W))
+        problems_lbl.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky=(W))
 
         Label(self.master, text='Memo Filter').grid(row=2, column=2)
         filter_str = StringVar()
