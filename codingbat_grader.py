@@ -32,6 +32,7 @@ help_url = "https://joncoop.github.io/codingbat-grader/"
 
 # Account info
 LOGIN_URL = "https://codingbat.com/login"
+LOGOUT_URL = "https://codingbat.com/logout"
 REPORT_URL = "https://codingbat.com/report?java=on&python=on&stock=on&sortname=on"
 SSL_VERIFY = False
 
@@ -67,26 +68,35 @@ class App:
         self.master.title("CodingBat Grader")
         self.master.resizable(True, True)
 
-        Label(self.master, text='User ID').grid(row=0, column=0)
-        un = StringVar()
-        self.uname_entry = Entry(self.master, textvariable=un, width=30)
-        self.uname_entry.grid(row=0, column=1)
+        login_area = Frame(self.master)
+        #login_area.pack( side = LEFT )
         
-        Label(self.master, text='Password').grid(row=0, column=2)
+        Label(login_area, text='User ID').pack(side=LEFT, padx=5, pady=5)
+        un = StringVar()
+        self.uname_entry = Entry(login_area, textvariable=un, width=30)
+        self.uname_entry.pack(side=LEFT, padx=5, pady=5)
+        
+        Label(login_area, text='Password').pack(side=LEFT, padx=5, pady=5)
         pw = StringVar()
-        self.pw_entry = Entry(self.master, show="\u2022" ,textvariable=pw) 
-        self.pw_entry.grid(row=0, column=3) 
+        self.pw_entry = Entry(login_area, show="\u2022" ,textvariable=pw) 
+        self.pw_entry.pack(side=LEFT, padx=5, pady=5)
 
-        login_button = Button(self.master, text="Log in", command=self.login)
+        login_button = Button(login_area, text="Log in", command=self.login)
         login_button.bind('<Return>', lambda e: self.login())
-        login_button.grid(row=0, column=4, padx=5, pady=5, sticky=(E))
+        login_button.pack(side=LEFT, padx=5, pady=5)
+
+        logout_button = Button(login_area, text="Log out", command=self.logout)
+        logout_button.bind('<Return>', lambda e: self.logout())
+        logout_button.pack(side=LEFT, padx=5, pady=5)
+
+        login_area.grid(row=0, column=0, columnspan=5, padx=5, pady=5)
 
         sep = Separator(self.master, orient=HORIZONTAL).grid(row=1, columnspan=5, sticky='EW')
 
         problems_lbl = Label(self.master, text="Problem Sets")
         problems_lbl.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky=(W))
 
-        Label(self.master, text='Memo Filter').grid(row=2, column=2)
+        Label(self.master, text='Filter').grid(row=2, column=2)
         filter_str = StringVar()
         filter_str.set("")
         filter_str.trace("w", filter_str.get())
@@ -164,46 +174,62 @@ class App:
         Does something.
         """
 
-        with requests.Session() as s:
-            page = s.get(REPORT_URL, verify=SSL_VERIFY)
-            
-            payload = {"uname": self.uname_entry.get(),
-                       "pw": self.pw_entry.get()}
-            
-            response = s.post(LOGIN_URL, verify=SSL_VERIFY, data=payload)
-            html = s.get(REPORT_URL).content
+        if not self.logged_in:
+            with requests.Session() as s:
+                page = s.get(REPORT_URL, verify=SSL_VERIFY)
+                
+                payload = {"uname": self.uname_entry.get(),
+                           "pw": self.pw_entry.get()}
+                
+                response = s.post(LOGIN_URL, verify=SSL_VERIFY, data=payload)
+                html = s.get(REPORT_URL).content
 
-        self.logged_in = '[<a href=/logout>log out</a>]' in str(html)
+            self.logged_in = '[<a href=/logout>log out</a>]' in str(html)
 
-        if self.logged_in:
-            soup = BeautifulSoup(html, "html.parser")
-            self.data_table = soup.findAll('table')[2] # the third table is the student scores
+            if self.logged_in:
+                soup = BeautifulSoup(html, "html.parser")
+                self.data_table = soup.findAll('table')[2] # the third table is the student scores
 
-            rows = self.data_table.findAll('tr')
-            header_row = rows[0]
-            th_elements = header_row.findAll('th')
+                rows = self.data_table.findAll('tr')
+                header_row = rows[0]
+                th_elements = header_row.findAll('th')
 
-            self.headers = []
-            for th in th_elements:
-                self.headers.append(th.get_text().strip())
+                self.headers = []
+                for th in th_elements:
+                    self.headers.append(th.get_text().strip())
 
-            self.problem_sets = self.headers[2:]
-            self.show_problem_sets()
-            
-            self.students = []
+                self.problem_sets = self.headers[2:]
+                self.show_problem_sets()
+                
+                self.students = []
 
-            for row in rows[2:]:
-                td_elements = row.findAll('td')
+                for row in rows[2:]:
+                    td_elements = row.findAll('td')
 
-                student = []
-                for i, td in enumerate(td_elements):
-                    student.append(td.get_text())
-                self.students.append(student)
+                    student = []
+                    for i, td in enumerate(td_elements):
+                        student.append(td.get_text())
+                    self.students.append(student)
 
-            self.show_students()
-        else:
-            print("login failed")
-    
+                self.show_students()
+            else:
+                print("login failed")
+
+    def logout(self):
+        '''
+        Don't really need to log out because the session closes once the data is pulled from site.
+        This function really just clears out the interface so that we could log in again with another
+        account.
+        '''
+        self.data_table = None
+        self.headers = []
+        self.problem_sets = []
+        self.students = []
+        self.logged_in = False
+
+        self.problem_set_menu.delete(0,END)
+        self.student_list.delete(*self.student_list.get_children())
+        
     def show_problem_sets(self):
         """
         Does something.

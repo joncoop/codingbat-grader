@@ -25,9 +25,13 @@ Get v0.9-beta.1
 
 ## Tips
 
-In order to easily filter students by class, have them enter a unique string in their Memo field that corresponds to their class/section. For example, a student in AP Computer Science A, section 3 could include [APCSA-3] in the memo field along with their name. For example, all of my students have memo fields in the following format:
+In order to easily filter students by class, have them enter a string in their Memo field that corresponds to their class/section. For example, all of my students have Memo fields in the following formats:
 
+    Babbage, Charles [APCSP-1]
     Lovelace, Ada [APCSA-3]
+    Turing, Alan [APCSA-3]
+    van Rossum, Guido [APCSA-6]
+    Wozniak, Steve [APCSP-1]
 
 ## Disclaimer
 
