@@ -1,8 +1,6 @@
 """
-ZipGrade Reporter is a tool that can process the CSV Export data from ZipGrade
-and use it to generate reports in a Microsoft Word format. Reports contain
-detailed test statistics, score summaries by class, and individual score reports
-for distribution to students.
+CodingBat Grader is a tool that parse CodingBat Teacher Reports and present student grades in a
+searchable, easy to view format.
 """
 
 import os
@@ -34,27 +32,25 @@ help_url = "https://joncoop.github.io/codingbat-grader/"
 LOGIN_URL = "https://codingbat.com/login"
 LOGOUT_URL = "https://codingbat.com/logout"
 REPORT_URL = "https://codingbat.com/report?java=on&python=on&stock=on&sortname=on"
-SSL_VERIFY = False
+SSL_VERIFY = False # to accept third-party certificate on school network
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class App:
     """
     GUI component of CodingBat Grader.
-
-    Attributes:
-        import_path (str): Path to CSV file.
-        export_path (str): Path to save final report.
     """
 
     def __init__(self, master):
-        """Constructor for an App
+        """
+        Constructor for an App
         """
         
         self.data_table = None
         self.headers = []
         self.problem_sets = []
         self.students = []
+        self.session = None
         self.logged_in = False
         
         self.master = master
@@ -84,6 +80,10 @@ class App:
         login_button = Button(login_area, text="Log in", command=self.login)
         login_button.bind('<Return>', lambda e: self.login())
         login_button.pack(side=LEFT, padx=5, pady=5)
+
+        refresh_button = Button(login_area, text="\u21bb", command=self.refresh)
+        refresh_button.bind('<Return>', lambda e: self.login())
+        refresh_button.pack(side=LEFT, padx=5, pady=5)
 
         logout_button = Button(login_area, text="Log out", command=self.logout)
         logout_button.bind('<Return>', lambda e: self.logout())
@@ -171,75 +171,83 @@ class App:
     
     def login(self):
         """
-        Does something.
+        Creates a session and checks for successful login.
         """
 
         if not self.logged_in:
-            with requests.Session() as s:
-                page = s.get(REPORT_URL, verify=SSL_VERIFY)
-                
-                payload = {"uname": self.uname_entry.get(),
-                           "pw": self.pw_entry.get()}
-                
-                response = s.post(LOGIN_URL, verify=SSL_VERIFY, data=payload)
-                html = s.get(REPORT_URL).content
+            self.session = requests.Session()
+            page = self.session.get(REPORT_URL, verify=SSL_VERIFY)
+            
+            payload = {"uname": self.uname_entry.get(),
+                       "pw": self.pw_entry.get()}
+            
+            response = self.session.post(LOGIN_URL, verify=SSL_VERIFY, data=payload)
+            html = self.session.get(REPORT_URL).content
 
             self.logged_in = '[<a href=/logout>log out</a>]' in str(html)
 
             if self.logged_in:
-                soup = BeautifulSoup(html, "html.parser")
-                self.data_table = soup.findAll('table')[2] # the third table is the student scores
-
-                rows = self.data_table.findAll('tr')
-                header_row = rows[0]
-                th_elements = header_row.findAll('th')
-
-                self.headers = []
-                for th in th_elements:
-                    self.headers.append(th.get_text().strip())
-
-                self.problem_sets = self.headers[2:]
-                self.show_problem_sets()
-                
-                self.students = []
-
-                for row in rows[2:]:
-                    td_elements = row.findAll('td')
-
-                    student = []
-                    for i, td in enumerate(td_elements):
-                        student.append(td.get_text())
-                    self.students.append(student)
-
-                self.show_students()
+                self.refresh()
             else:
                 print("login failed")
 
+    def refresh(self):
+        if self.logged_in:
+            self.problem_set_menu.delete(0,END)
+            self.student_list.delete(*self.student_list.get_children())
+            
+            html = self.session.get(REPORT_URL).content
+                
+            soup = BeautifulSoup(html, "html.parser")
+            self.data_table = soup.findAll('table')[2] # the third table is the student scores
+
+            rows = self.data_table.findAll('tr')
+            header_row = rows[0]
+            th_elements = header_row.findAll('th')
+
+            self.headers = []
+            for th in th_elements:
+                self.headers.append(th.get_text().strip())
+
+            self.problem_sets = self.headers[2:]
+            self.show_problem_sets()
+            
+            self.students = []
+
+            for row in rows[2:]:
+                td_elements = row.findAll('td')
+
+                student = []
+                for i, td in enumerate(td_elements):
+                    student.append(td.get_text())
+                self.students.append(student)
+
+            self.show_students()
+    
     def logout(self):
         '''
-        Don't really need to log out because the session closes once the data is pulled from site.
-        This function really just clears out the interface so that we could log in again with another
-        account.
+        Clears student data and kills the session.
         '''
         self.data_table = None
         self.headers = []
         self.problem_sets = []
         self.students = []
         self.logged_in = False
+        self.session = None
 
         self.problem_set_menu.delete(0,END)
         self.student_list.delete(*self.student_list.get_children())
         
     def show_problem_sets(self):
         """
-        Does something.
+        Lists problem sets in menu.
         """
         for i, ps in enumerate(self.problem_sets):
             self.problem_set_menu.insert(i, ps) 
         
     def show_students(self):
         """
-        Does something.
+        Shows filtered list of students and scores.
         """
 
         if self.logged_in:
