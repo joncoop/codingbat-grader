@@ -248,7 +248,7 @@ class App:
         self.problem_set_menu.delete(0,END)
         self.student_list.delete(*self.student_list.get_children())
 
-        #self.pw_label.pack(side=LEFT, padx=5, pady=5)
+        self.pw_label.pack(side=LEFT, padx=5, pady=5)
         self.pw_entry.pack(side=LEFT, padx=5, pady=5)
         self.login_button.pack(side=LEFT, padx=5, pady=5)
         self.refresh_button.pack_forget()
@@ -288,9 +288,7 @@ class App:
                 else:
                     score = ''
 
-                if memo_filter in memo.lower():
-                    #self.student_list.insert(END, f'{memo:30s} {score}\n')
-                    
+                if memo_filter in memo.lower():                    
                     self.student_list.insert("", "end", values=(user, memo, score))
 
         
