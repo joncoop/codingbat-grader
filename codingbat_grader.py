@@ -62,34 +62,38 @@ class App:
         """
         #self.master.iconbitmap(application_path + 'images/icon.ico')
         self.master.title("CodingBat Grader")
-        self.master.resizable(True, True)
+        self.master.resizable(False, False)
 
         login_area = Frame(self.master)
-        #login_area.pack( side = LEFT )
         
-        Label(login_area, text='User ID').pack(side=LEFT, padx=5, pady=5)
+        self.un_label = Label(login_area, text='User ID')
+        self.un_label.pack(side=LEFT, padx=5, pady=5)
         un = StringVar()
         self.uname_entry = Entry(login_area, textvariable=un, width=30)
         self.uname_entry.pack(side=LEFT, padx=5, pady=5)
         
-        Label(login_area, text='Password').pack(side=LEFT, padx=5, pady=5)
+        self.pw_label = Label(login_area, text='Password')
+        self.pw_label.pack(side=LEFT, padx=5, pady=5)
         pw = StringVar()
         self.pw_entry = Entry(login_area, show="\u2022" ,textvariable=pw) 
         self.pw_entry.pack(side=LEFT, padx=5, pady=5)
 
-        login_button = Button(login_area, text="Log in", command=self.login)
-        login_button.bind('<Return>', lambda e: self.login())
-        login_button.pack(side=LEFT, padx=5, pady=5)
+        self.login_button = Button(login_area, text="Log in", command=self.login)
+        self.login_button.bind('<Return>', lambda e: self.login())
+        self.login_button.pack(side=LEFT, padx=5, pady=5)
 
-        refresh_button = Button(login_area, text="\u21bb", command=self.refresh)
-        refresh_button.bind('<Return>', lambda e: self.login())
-        refresh_button.pack(side=LEFT, padx=5, pady=5)
+        self.refresh_button = Button(login_area, text="\u21bb", command=self.refresh)
+        self.refresh_button.bind('<Return>', lambda e: self.refresh())
+        self.refresh_button.pack(side=LEFT, padx=5, pady=5)
 
-        logout_button = Button(login_area, text="Log out", command=self.logout)
-        logout_button.bind('<Return>', lambda e: self.logout())
-        logout_button.pack(side=LEFT, padx=5, pady=5)
+        self.logout_button = Button(login_area, text="Log out", command=self.logout)
+        self.logout_button.bind('<Return>', lambda e: self.logout())
+        self.logout_button.pack(side=LEFT, padx=5, pady=5)
 
         login_area.grid(row=0, column=0, columnspan=5, padx=5, pady=5)
+
+        self.refresh_button.pack_forget()
+        self.logout_button.pack_forget()
 
         sep = Separator(self.master, orient=HORIZONTAL).grid(row=1, columnspan=5, sticky='EW')
 
@@ -187,9 +191,15 @@ class App:
             self.logged_in = '[<a href=/logout>log out</a>]' in str(html)
 
             if self.logged_in:
+                self.pw_label.pack_forget()
+                self.pw_entry.pack_forget()
+                self.login_button.pack_forget()
+                self.refresh_button.pack(side=LEFT, padx=5, pady=5)
+                self.logout_button.pack(side=LEFT, padx=5, pady=5)
+                
                 self.refresh()
             else:
-                print("login failed")
+                self.pw_entry.delete(0, 'end')
 
     def refresh(self):
         if self.logged_in:
@@ -237,6 +247,12 @@ class App:
 
         self.problem_set_menu.delete(0,END)
         self.student_list.delete(*self.student_list.get_children())
+
+        #self.pw_label.pack(side=LEFT, padx=5, pady=5)
+        self.pw_entry.pack(side=LEFT, padx=5, pady=5)
+        self.login_button.pack(side=LEFT, padx=5, pady=5)
+        self.refresh_button.pack_forget()
+        self.logout_button.pack_forget()
         
     def show_problem_sets(self):
         """
