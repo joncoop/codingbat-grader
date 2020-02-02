@@ -21,6 +21,8 @@ Get v0.9-beta.1
 2. Select the problem set to view grades for.
 3. Optionally, enter text into the filter field to filter by Memo.
 
+![Screenshot](https://raw.githubusercontent.com/joncoop/codingbat-grader/master/screenshot.png)
+
 ## Tips
 
 In order to easily filter students by class, have them enter a string in their Memo field that corresponds to their class/section. For example, all of my students have Memo fields in the following formats:
