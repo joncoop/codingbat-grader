@@ -2,20 +2,16 @@
 
 CodingBat Grader is a tool that parse [CodingBat Teacher Reports](https://codingbat.com/report) and present student grades in a searchable, easy to view format.
 
-<!--
 ## Downloads
-
 Get v0.9-beta.1
 
-![Windows](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/win.png)
-[Self-installing version (recommended)](https://github.com/joncoop/zipgrade-reporter/releases/download/v0.9-beta.1/CodingBat.Grader.Setup.exe)
- /
-[Stand-alone version (.exe)](https://github.com/joncoop/zipgrade-reporter/releases/download/v0.9-beta.1/CodingBat.Grader.exe)
+### Source code
+[codingbat-grader-master.zip](https://github.com/joncoop/codingbat-grader/archive/master.zip)
 
+### Executables
+![Windows](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/win.png) Coming soon
 ![Mac](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/mac.png) Coming soon
-
 ![Linux](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/lin.png) Coming Soon
--->
 
 ## How to use
 
