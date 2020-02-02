@@ -10,7 +10,9 @@ Get v0.9-beta.1
 
 ### Executables
 ![Windows](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/win.png) Coming soon
+
 ![Mac](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/mac.png) Coming soon
+
 ![Linux](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/lin.png) Coming Soon
 
 ## How to use
