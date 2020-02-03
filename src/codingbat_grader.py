@@ -18,10 +18,10 @@ if getattr(sys, 'frozen', False):
 else:
     application_path = os.path.dirname(__file__) + '/'
 
-software_version = 'v0.9-beta.1'
+software_version = 'v0.9-beta.3'
 """str: Version number of this release."""
 
-version_url = 'https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/src/version.txt'
+version_url = 'https://raw.githubusercontent.com/joncoop/codingbat-grader/master/src/version.txt'
 """ str: URL of version info, used to check if software is up-to-date."""
 
 help_url = "https://joncoop.github.io/codingbat-grader/"
@@ -60,7 +60,7 @@ class App:
         """
         Defines App layout
         """
-        #self.master.iconbitmap(application_path + 'images/icon.ico')
+        self.master.iconbitmap(application_path + 'images/icon.ico')
         self.master.title("CodingBat Grader")
         self.master.resizable(False, False)
 
@@ -128,7 +128,6 @@ class App:
         help_link.pack( side = LEFT )
         help_link.bind("<Button-1>", lambda e: webbrowser.open_new(help_url))
 
-        '''
         if not self.is_up_to_date():
             slash = Label(links, text=" | ", foreground="gray", cursor="hand2")
             slash.pack( side = LEFT )
@@ -136,7 +135,6 @@ class App:
             update_link = Label(links, text="Update CodingBat Grader", foreground="blue", cursor="hand2")
             update_link.pack( side = LEFT )
             update_link.bind("<Button-1>", lambda e: webbrowser.open_new(help_url))
-        '''
         
         links.grid(row=4, column=0, columnspan=3, padx=5, pady=5, sticky=(W))
 
@@ -199,11 +197,11 @@ class App:
                 
                 self.refresh()
             else:
-                self.pw_entry.delete(0, 'end')
+                self.pw_entry.delete(0, END)
 
     def refresh(self):
         if self.logged_in:
-            self.problem_set_menu.delete(0,END)
+            self.problem_set_menu.delete(0, END)
             self.student_list.delete(*self.student_list.get_children())
             
             html = self.session.get(REPORT_URL).content
@@ -229,7 +227,10 @@ class App:
 
                 student = []
                 for i, td in enumerate(td_elements):
-                    student.append(td.get_text())
+                    score = td.get_text().strip()
+                    if len(score) == 0:
+                        score = '0'
+                    student.append(score)
                 self.students.append(student)
 
             self.show_students()
@@ -245,7 +246,7 @@ class App:
         self.logged_in = False
         self.session = None
 
-        self.problem_set_menu.delete(0,END)
+        self.problem_set_menu.delete(0, END)
         self.student_list.delete(*self.student_list.get_children())
 
         self.pw_label.pack(side=LEFT, padx=5, pady=5)
@@ -278,7 +279,6 @@ class App:
             memo_filter = self.filter_entry.get()
             memo_filter.lower()
 
-            i = 0
             for stu in self.students:
                 user = stu[0]
                 memo = stu[1]
@@ -289,7 +289,7 @@ class App:
                     score = ''
 
                 if memo_filter in memo.lower():                    
-                    self.student_list.insert("", "end", values=(user, memo, score))
+                    self.student_list.insert('', END, values=(user, memo, score))
 
         
 # Let's do this!

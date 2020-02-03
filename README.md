@@ -1,6 +1,6 @@
 ## About
 
-CodingBat Grader is a tool that parse [CodingBat Teacher Reports](https://codingbat.com/report) and present student grades in a searchable, easy to view format.
+CodingBat Grader is a tool that parses [CodingBat Teacher Reports](https://codingbat.com/report) and presents student grades in a searchable, easy to view format.
 
 ## Downloads
 Get v0.9-beta.1
