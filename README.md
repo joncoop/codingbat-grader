@@ -23,7 +23,7 @@ Get v0.9-beta.3
 2. Select the problem set to view grades for.
 3. Optionally, enter text into the filter field to filter by Memo.
 
-![Screenshot](https://raw.githubusercontent.com/joncoop/codingbat-grader/master/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/joncoop/codingbat-grader/master/img/screenshot.png)
 
 ## Tips
 
