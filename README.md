@@ -12,9 +12,7 @@ Get v0.9-beta.3
 
 ![Mac](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/mac.png) Coming soon
 
-![Linux](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/lin.png) [Stand-alone version ](https://github.com/joncoop/codingbat-grader/releases/download/v0.9-beta.3/CodingBat.Grader)*
-
-* To run the Linux version, right-click on the application, select "Properties -> Permissions" and check "Allow executing file as program".
+![Linux](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/lin.png) [Stand-alone version ](https://github.com/joncoop/codingbat-grader/releases/download/v0.9-beta.3/CodingBat.Grader) (To run the Linux version, right-click on the application, select "Properties -> Permissions" and check "Allow executing file as program".)
 
 ### Source code
 [codingbat-grader-master.zip](https://github.com/joncoop/codingbat-grader/archive/master.zip)
