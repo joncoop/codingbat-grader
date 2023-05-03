@@ -7,7 +7,7 @@ Get v0.9-beta.4
 
 ### Executables
 ![Windows](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/win.png)
-[Self-installing version (recommended)](https://github.com/joncoop/codingbat-grader/releases/download/v0.9-beta.3/CodingBat.Grader.Setup.exe)
+[Self-installing version (recommended)](https://github.com/joncoop/codingbat-grader/releases/download/v0.9-beta.4/CodingBat.Grader.msi)
  / [Stand-alone version (.exe)](https://github.com/joncoop/codingbat-grader/releases/download/v0.9-beta.4/CodingBat.Grader.exe)
 
 ![Mac](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/mac.png) Coming soon
