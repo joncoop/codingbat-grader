@@ -3,7 +3,7 @@
 CodingBat Grader is a tool that parses [CodingBat Teacher Reports](https://codingbat.com/report) and presents student grades in a searchable, easy to view format.
 
 ## Downloads
-Get v0.9-beta.3
+Get v0.9-beta.4
 
 ### Executables
 ![Windows](https://raw.githubusercontent.com/joncoop/zipgrade-reporter/master/img/win.png)
