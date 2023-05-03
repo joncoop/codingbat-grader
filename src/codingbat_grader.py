@@ -18,7 +18,7 @@ if getattr(sys, 'frozen', False):
 else:
     application_path = os.path.dirname(__file__) + '/'
 
-software_version = 'v0.9-beta.3'
+software_version = 'v0.9-beta.4'
 """str: Version number of this release."""
 
 version_url = 'https://raw.githubusercontent.com/joncoop/codingbat-grader/master/src/version.txt'
@@ -218,19 +218,32 @@ class App:
                 self.headers.append(th.get_text().strip())
 
             self.problem_sets = self.headers[2:]
+            self.problem_sets.insert(-1, 'Java')
+            self.problem_sets.insert(-1, 'Python')
             self.show_problem_sets()
             
             self.students = []
 
-            for row in rows[2:]:
+            for row in rows[2: ]:
                 td_elements = row.findAll('td')
 
                 student = []
+                java_solved = 0
+                python_solved = 0
                 for i, td in enumerate(td_elements):
                     score = td.get_text().strip()
                     if len(score) == 0:
                         score = '0'
                     student.append(score)
+
+                    if 'java' in self.headers[i]:
+                        java_solved += int(score)
+                    elif 'python' in self.headers[i]:
+                        python_solved += int(score)
+
+                student.insert(-1, str(java_solved))
+                student.insert(-1, str(python_solved))
+
                 self.students.append(student)
 
             self.show_students()
@@ -271,7 +284,7 @@ class App:
             self.student_list.delete(*self.student_list.get_children())
             selected_problem_sets = self.problem_set_menu.curselection()
 
-            if not selected_problem_sets is ():
+            if selected_problem_sets != ():
                 index = selected_problem_sets[0]
             else:
                 index = None
