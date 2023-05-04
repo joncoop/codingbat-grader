@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CodingBat Grader"
-#define MyAppVersion "0.9-beta.3"
+#define MyAppVersion "0.9-beta.4"
 #define MyAppPublisher "joncoop"
 #define MyAppURL "https://joncoop.github.io/codingbat-grader/"
 #define MyAppExeName "CodingBat Grader.exe"

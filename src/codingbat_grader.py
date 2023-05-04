@@ -7,6 +7,7 @@ import os
 import sys
 import requests
 import webbrowser
+import urllib
 
 from bs4 import BeautifulSoup
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
